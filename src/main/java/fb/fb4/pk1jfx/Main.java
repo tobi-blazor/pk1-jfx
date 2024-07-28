@@ -20,9 +20,12 @@ public class Main extends Application {
         stage.show();
         RisikoErfassungView risikoErfassungView = new RisikoErfassungView(risikoverwaltung, stage);
         risikoErfassungView.showView();
-        RisikoExtremErfassungView risikoExtremErfassungView = new RisikoExtremErfassungView(risikoverwaltung, stage);
+
+        AkzeptablesRisiko akzeptablesRisiko = new AkzeptablesRisiko(null, 0, 0);
+
+        RisikoExtremErfassungView risikoExtremErfassungView = new RisikoExtremErfassungView(risikoverwaltung, stage, akzeptablesRisiko);
         risikoExtremErfassungView.showView();
-        RisikoInakzeptabelErfassungView risikoInakzeptabelErfassungView = new RisikoInakzeptabelErfassungView(risikoverwaltung, stage);
+        RisikoInakzeptabelErfassungView risikoInakzeptabelErfassungView = new RisikoInakzeptabelErfassungView(risikoverwaltung, stage, akzeptablesRisiko);
         risikoInakzeptabelErfassungView.showView();
 
     }
