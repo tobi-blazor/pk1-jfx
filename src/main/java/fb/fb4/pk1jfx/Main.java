@@ -1,15 +1,9 @@
 package fb.fb4.pk1jfx;
 
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 public class Main extends Application {
     @Override
@@ -17,7 +11,7 @@ public class Main extends Application {
         Risikoverwaltung risikoverwaltung = new Risikoverwaltung();
 
         RisikoverwaltungView risikoverwaltungView = new RisikoverwaltungView(risikoverwaltung, stage);
-        stage.show();
+        risikoverwaltungView.showView();
         RisikoErfassungView risikoErfassungView = new RisikoErfassungView(risikoverwaltung, stage);
         risikoErfassungView.showView();
 
@@ -31,8 +25,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        Menu menu = new Menu();
-        menu.useDemoDaten();
+        MenuUI menuUI = new MenuUI();
+        menuUI.useDemoDaten();
         launch();
 
     }

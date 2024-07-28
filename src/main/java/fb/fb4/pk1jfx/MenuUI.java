@@ -6,13 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Menu {
+public class MenuUI {
     private Risikoverwaltung risikoverwaltung;
     private final float LIMIT = 10000f;
     private final float KOSTENLIMIT = 1000000f;
     Scanner sc = new Scanner(System.in);
 
-    public Menu() {
+    public MenuUI() {
         risikoverwaltung = new Risikoverwaltung();
     }
 
