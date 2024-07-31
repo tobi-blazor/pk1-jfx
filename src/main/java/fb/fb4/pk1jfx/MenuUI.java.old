@@ -1,0 +1,190 @@
+package fb.fb4.pk1jfx;
+
+import fh.fb4.fachlogik.*;
+import fh.fb4.gui.UserAbortException;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class MenuUI {
+    private Risikoverwaltung risikoverwaltung;
+    private final float LIMIT = 10000f;
+    private final float KOSTENLIMIT = 1000000f;
+    Scanner sc = new Scanner(System.in);
+
+    public MenuUI() {
+        risikoverwaltung = new Risikoverwaltung();
+    }
+
+    public void startMenu() {
+        boolean exitMenu = false;
+        while (!exitMenu) {
+            switch (getUserInput()) {
+                case 1:
+                    risikoAufnehmen();
+                    break;
+                case 2:
+                    risikoverwaltung.zeigeRisiken();
+                    break;
+                case 3:
+                    druckeRisikenInDatei();
+                    break;
+                case 4:
+                    risikoverwaltung.printRisikoMitMaxRueckstellung();
+                    break;
+                case 5:
+                    System.out.println("Summe aller Rückstellungen: " + risikoverwaltung.berechneSummeRueckstellungen());
+                    break;
+                case 6:
+                    serialisieren();
+                    break;
+                case 7:
+                    deserialisieren();
+                    break;
+                case 8:
+                    System.out.println("Anwendung wird beendet. Viel Spaß bei Painklausur 1");
+                    exitMenu = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        sc.close();
+    }
+
+    private int getUserInput() {
+        System.out.print("Risikoverwaltung\n" +
+                "\n" +
+                "1. Risiko aufnehmen\n" +
+                "2. Zeige alle Risiken\n" +
+                "3. Risikoliste in Datei schreiben\n" +
+                "4. Zeige Risiko mit maximaler Rückstellung\n" +
+                "5. Berechne Summe aller Rückstellungen\n" +
+                "6. Speichern\n" +
+                "7. Laden\n" +
+                "8. Beenden\n" +
+                "\n" +
+                "Bitte Menüpunkt wählen: ");
+        String userInputString = sc.next();
+        int userInput = 0;
+        try {
+            userInput = Integer.parseInt(userInputString);
+        } catch (NumberFormatException e) {
+            System.out.println("Ungültige Eingabe. Eingabe wird wiederholt");
+        }
+        return userInput;
+    }
+
+    private void risikoAufnehmen() {
+        String risikoname, massnahme;
+        float eintrittswahrscheinlichkeit, kosten_im_schadensfall, versicherungsbetrag;
+        try {
+            risikoname = jOptionPaneString("Risikoname");
+            eintrittswahrscheinlichkeit = jOptionPaneFloat("Eintrittswahrscheinlichkeit");
+            kosten_im_schadensfall = jOptionPaneFloat("Kosten im Schadensfall");
+
+            float risikowert = eintrittswahrscheinlichkeit * kosten_im_schadensfall;
+
+            if (risikowert < LIMIT) {
+                risikoverwaltung.aufnehmen(new AkzeptablesRisiko(risikoname, eintrittswahrscheinlichkeit, kosten_im_schadensfall));
+                System.out.printf("---Akzeptables Risiko %s wurde eingefügt---\n", risikoname);
+                return;
+            } else {
+                massnahme = JOptionPane.showInputDialog(null, "Maßnahme");
+            }
+
+            if (risikowert < KOSTENLIMIT) {
+                risikoverwaltung.aufnehmen(new InakzeptablesRisiko(risikoname, eintrittswahrscheinlichkeit, kosten_im_schadensfall, massnahme));
+                System.out.printf("---Inakzeptables Risiko %s wurde eingefügt---\n", risikoname);
+            } else {
+                versicherungsbetrag = jOptionPaneFloat("Versicherungsbetrag", 0f, 1f);
+                risikoverwaltung.aufnehmen(new ExtremesRisiko(risikoname, eintrittswahrscheinlichkeit, kosten_im_schadensfall, massnahme, versicherungsbetrag));
+                System.out.printf("---Extremes Risiko %s wurde eingefügt---\n", risikoname);
+            }
+        } catch (InvalidInputException | UserAbortException | ValueNotInRangeException e) {
+            return;
+        } catch (EmptyFilenameException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String jOptionPaneString(String bezeichnung) throws UserAbortException, EmptyFilenameException {
+        String returnString;
+        returnString = JOptionPane.showInputDialog(null, bezeichnung);
+        if (returnString == null) {
+            System.out.println("User hat Eingabe abgebrochen");
+            throw new UserAbortException();
+        }
+        if (returnString.isEmpty()) {
+            throw new EmptyFilenameException("Dateiname leer");
+        }
+        return returnString;
+    }
+
+    private float jOptionPaneFloat(String bezeichnung) throws InvalidInputException, UserAbortException, ValueNotInRangeException {
+        return jOptionPaneFloat(bezeichnung, Float.MIN_VALUE, Float.MAX_VALUE);
+    }
+
+    private float jOptionPaneFloat(String bezeichnung, float min, float max) throws InvalidInputException, UserAbortException, ValueNotInRangeException {
+        float returnFloat;
+        try {
+            returnFloat = Float.parseFloat(JOptionPane.showInputDialog(null, bezeichnung));
+        } catch (NumberFormatException e) {
+            System.out.println("Ungültiger Wert");
+            JOptionPane.showMessageDialog(null, "Ungültiger Wert");
+            throw new InvalidInputException(bezeichnung + " ungültig");
+        } catch (NullPointerException e) {
+            System.out.println("User hat Eingabe abgebrochen");
+            throw new UserAbortException();
+        }
+        if (returnFloat < min || returnFloat > max) {
+            System.out.println("Wert liegt nicht im Wertebereich");
+            JOptionPane.showMessageDialog(null, "Wert liegt nicht im Wertebereich");
+            throw new ValueNotInRangeException("Wert kleiner als " + min + " oder größer als" + max);
+        }
+        return returnFloat;
+    }
+
+    private void druckeRisikenInDatei() {
+        boolean repeat;
+        do {
+            repeat = false;
+            try {
+                String dateiname = jOptionPaneString("Dateiname");
+                risikoverwaltung.druckeRisikenInDatei(dateiname);
+            } catch (EmptyFilenameException e) {
+                repeat = JOptionPane.showConfirmDialog(null, "Dateiname darf nicht leer sein. Eingabe wiederholen?") == JOptionPane.OK_OPTION;
+            } catch (UserAbortException e) {
+                System.out.println("User hat Druck in Datei abgebrochen");
+            } catch (FileNotFoundException e) {
+                System.out.println("Dateiname ungültig");
+            } catch (IOException e) {
+                System.out.println("Stream Fehler");
+            }
+        } while (repeat);
+    }
+
+    public void useDemoDaten() {
+        risikoverwaltung.aufnehmen(new AkzeptablesRisiko("Lizenzkosten der IDE steigt", 0.2f, 2000));
+        risikoverwaltung.aufnehmen(new ExtremesRisiko("Hauptauftraggeber meldet Insolvenz an", 0.05f, 2500, "Versicherung abschließen", 5000));
+        risikoverwaltung.aufnehmen(new InakzeptablesRisiko("DB Experte verlässt Projekt", 0.15f, 1000, "Ersatz bei DIenstleister reservieren"));
+
+    }
+
+    private void serialisieren() {
+        String dateiname = "savedData.ser";
+        File f = new File(dateiname);
+        risikoverwaltung.serialisieren(f);
+    }
+
+    private void deserialisieren() {
+        String dateiname = "savedData.ser";
+        File f = new File(dateiname);
+        risikoverwaltung.deserialisieren(f);
+
+    }
+
+}
