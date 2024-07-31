@@ -1,4 +1,4 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.fachlogik;
 
 public class ValueNotInRangeException extends Exception {
     public ValueNotInRangeException() {

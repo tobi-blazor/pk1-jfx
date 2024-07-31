@@ -1,5 +1,6 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.gui;
 
+import fh.fb4.fachlogik.Risiko;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,11 +19,11 @@ import javafx.stage.Stage;
 
 
 public class RisikoErfassungView extends Stage {
-    Risikoverwaltung risikoverwaltung;
+    Risiko risiko;
     SimpleStringProperty bezeichnung, eintrittswahrscheinlichkeit, kostenImSchadensfall;
 
-    public RisikoErfassungView(Risikoverwaltung risikoverwaltung, Stage stage) {
-        this.risikoverwaltung = risikoverwaltung;
+    public RisikoErfassungView(Risiko risiko, Stage stage) {
+        this.risiko = risiko;
         this.initOwner(stage);
         this.initModality(Modality.WINDOW_MODAL);
     }

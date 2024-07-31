@@ -1,4 +1,6 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.fachlogik;
+
+import fh.fb4.fachlogik.Risiko;
 
 import java.util.Comparator;
 

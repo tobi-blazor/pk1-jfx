@@ -1,7 +1,6 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.fachlogik;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 

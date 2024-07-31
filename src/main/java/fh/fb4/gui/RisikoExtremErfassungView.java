@@ -1,9 +1,9 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.gui;
 
+import fh.fb4.fachlogik.Risiko;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,17 +15,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class RisikoExtremErfassungView extends Stage {
-    Risikoverwaltung risikoverwaltung;
-    AkzeptablesRisiko akzeptablesRisiko;
+    Risiko risiko;
     SimpleStringProperty massnahmen, versicherungsbeitrag;
-    public RisikoExtremErfassungView(Risikoverwaltung risikoverwaltung, Stage stage, AkzeptablesRisiko risiko) {
-        this.risikoverwaltung = risikoverwaltung;
-        this.akzeptablesRisiko = risiko;
+    public RisikoExtremErfassungView(Risiko risiko, Stage stage) {
+        this.risiko = risiko;
     }
 
     public void showView() {
         this.setScene(createScene());
-        this.setTitle("RisikoInakzeptabelErfassungView");
+        this.setTitle("RisikoExtremErfassungView");
         this.show();
     }
 
@@ -44,7 +42,7 @@ public class RisikoExtremErfassungView extends Stage {
 
         GridPane gridPane = new GridPane();
         gridPane.add(new Label("Bezeichnung:"), 0, 0);
-        gridPane.add(new Label(akzeptablesRisiko.getBezeichnung()), 1, 0);
+        gridPane.add(new Label(risiko.getBezeichnung()), 1, 0);
 
         gridPane.add(new Label("Maßnahmen:"), 0, 1);
         gridPane.add(tf_massnahmen, 1, 1);

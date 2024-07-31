@@ -1,4 +1,4 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.gui;
 
 public class UserAbortException extends Exception{
     public UserAbortException() {

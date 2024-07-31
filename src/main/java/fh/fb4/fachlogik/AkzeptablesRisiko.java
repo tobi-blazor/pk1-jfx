@@ -1,4 +1,6 @@
-package fb.fb4.pk1jfx;
+package fh.fb4.fachlogik;
+
+import fh.fb4.fachlogik.Risiko;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,7 +8,7 @@ import java.io.OutputStreamWriter;
 
 public class AkzeptablesRisiko extends Risiko {
     // keine rückstellung einplanen
-    AkzeptablesRisiko() {
+    public AkzeptablesRisiko() {
         super();
     }
     AkzeptablesRisiko(String bezeichnung, float eintrittswahrscheinlichkeit, float kosten_im_schadensfall) {
