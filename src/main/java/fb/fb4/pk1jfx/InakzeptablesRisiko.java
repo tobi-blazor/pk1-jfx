@@ -18,8 +18,9 @@ public class InakzeptablesRisiko extends Risiko {
         return massnahme;
     }
 
-    public void druckeDaten(OutputStream os) throws IOException {
-        String s = String.format("Id %d Inakzeptables Risiko \"%s\" aus %d/%d; Risikowert %.2f; Rückstellung %.2f; Maßnahme \"%s\"\n",
+    @Override
+    public String toString() {
+        return String.format("Id %d Inakzeptables Risiko \"%s\" aus %d/%d; Risikowert %.2f; Rückstellung %.2f; Maßnahme \"%s\"\n",
                 this.getId(),
                 this.getBezeichnung(),
                 this.getErstelldatum().getMonthValue(),
@@ -27,6 +28,10 @@ public class InakzeptablesRisiko extends Risiko {
                 this.berechneRisikowert(),
                 ermittleRueckstellung(),
                 massnahme);
+    }
+
+    public void druckeDaten(OutputStream os) throws IOException {
+        String s = this.toString();
         OutputStreamWriter osw = new OutputStreamWriter(os);
         osw.write(s.toCharArray());
         osw.flush();

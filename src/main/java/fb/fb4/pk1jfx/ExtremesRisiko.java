@@ -1,6 +1,7 @@
 package fb.fb4.pk1jfx;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
@@ -16,14 +17,18 @@ public class ExtremesRisiko extends InakzeptablesRisiko {
         return versicherungsbeitrag;
     }
 
-    public void druckeDaten(OutputStream os) throws IOException {
-        String s = String.format("Id %d Extremes Risiko \"%s\" aus %d/%d; Versicherungsbeitrag %.2f; Maßnahme \"%s\"\n",
+@Override
+    public String toString() {
+        return String.format("Id %d Extremes Risiko \"%s\" aus %d/%d; Versicherungsbeitrag %.2f; Maßnahme \"%s\"\n",
                 this.getId(),
                 this.getBezeichnung(),
                 this.getErstelldatum().getMonthValue(),
                 this.getErstelldatum().getYear(),
                 versicherungsbeitrag,
                 this.getMassnahme());
+    }
+    public void druckeDaten(OutputStream os) throws IOException {
+        String s = this.toString();
         OutputStreamWriter osw = new OutputStreamWriter(os);
         osw.write(s.toCharArray());
         osw.flush();
