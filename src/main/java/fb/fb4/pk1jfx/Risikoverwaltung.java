@@ -28,9 +28,18 @@ public class Risikoverwaltung {
         }
     }
 
-    public void sucheRisikoMitMaxRueckstellung() {
-        if(risikoList.size() == 0) {
-            return;
+    public void printRisikoMitMaxRueckstellung() {
+        Risiko highestRückstellung = sucheRisikoMitMaxRueckstellung();
+        try {
+            highestRückstellung.druckeDaten(System.out);
+        }catch(IOException e) {
+            System.out.println("Fehler beim OutputStream oder Liste leer");
+        }
+    }
+
+    public Risiko sucheRisikoMitMaxRueckstellung()  {
+        if(risikoList.isEmpty()) {
+            return null;
         }
         Iterator<Risiko> iterator = risikoList.iterator();
         Risiko highestRückstellung = iterator.next();
@@ -41,13 +50,8 @@ public class Risikoverwaltung {
             if(next.ermittleRueckstellung() > highestRückstellung.ermittleRueckstellung()) {
                 highestRückstellung = next;
             }
-
         }
-        try {
-            highestRückstellung.druckeDaten(System.out);
-        }catch(IOException e) {
-            System.out.println("Fehler beim OutputStream");
-        }
+        return highestRückstellung;
     }
 
 

@@ -30,7 +30,7 @@ public class MenuUI {
                     druckeRisikenInDatei();
                     break;
                 case 4:
-                    risikoverwaltung.sucheRisikoMitMaxRueckstellung();
+                    risikoverwaltung.printRisikoMitMaxRueckstellung();
                     break;
                 case 5:
                     System.out.println("Summe aller Rückstellungen: " + risikoverwaltung.berechneSummeRueckstellungen());
