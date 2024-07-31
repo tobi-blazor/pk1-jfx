@@ -6,6 +6,9 @@ import java.io.OutputStreamWriter;
 
 public class AkzeptablesRisiko extends Risiko {
     // keine rückstellung einplanen
+    AkzeptablesRisiko() {
+        super();
+    }
     AkzeptablesRisiko(String bezeichnung, float eintrittswahrscheinlichkeit, float kosten_im_schadensfall) {
         super(bezeichnung, eintrittswahrscheinlichkeit, kosten_im_schadensfall);
     }

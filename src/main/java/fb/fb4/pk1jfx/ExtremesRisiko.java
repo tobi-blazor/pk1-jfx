@@ -9,15 +9,25 @@ public class ExtremesRisiko extends InakzeptablesRisiko {
     // rückstellung = versicherungsbeitrag
 
     private float versicherungsbeitrag;
+    ExtremesRisiko() {
+        super();
+    }
     ExtremesRisiko(String bezeichnung, float eintrittswahrscheinlichkeit, float kosten_im_schadensfall, String massnahme, float versicherungsbeitrag) {
         super(bezeichnung, eintrittswahrscheinlichkeit, kosten_im_schadensfall, massnahme);
         this.versicherungsbeitrag = versicherungsbeitrag;
     }
+
+    public float getVersicherungsbeitrag() {
+        return this.versicherungsbeitrag;
+    }
+    public void setVersicherungsbeitrag(float versicherungsbeitrag){
+        this.versicherungsbeitrag = versicherungsbeitrag;
+    }
+
     public float ermittleRueckstellung() {
         return versicherungsbeitrag;
     }
-
-@Override
+    @Override
     public String toString() {
         return String.format("Id %d Extremes Risiko \"%s\" aus %d/%d; Versicherungsbeitrag %.2f; Maßnahme \"%s\"\n",
                 this.getId(),
@@ -27,15 +37,12 @@ public class ExtremesRisiko extends InakzeptablesRisiko {
                 versicherungsbeitrag,
                 this.getMassnahme());
     }
+
     public void druckeDaten(OutputStream os) throws IOException {
         String s = this.toString();
         OutputStreamWriter osw = new OutputStreamWriter(os);
         osw.write(s.toCharArray());
         osw.flush();
-    }
-
-    public float getVersicherungsbeitrag() {
-        return this.versicherungsbeitrag;
     }
 
     @Override

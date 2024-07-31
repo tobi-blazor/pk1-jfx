@@ -13,7 +13,9 @@ public abstract class Risiko implements Serializable {
     private float eintrittswahrscheinlichkeit;
     private float kosten_im_schadensfall;
     private LocalDate erstellungsdatum;
-
+    Risiko() {
+        this.id = idCount++;
+    }
     Risiko(String bezeichnung, float eintrittswahrscheinlichkeit, float kosten_im_schadensfall){
         this.id = idCount++;
         this.bezeichnung = bezeichnung;
@@ -36,11 +38,23 @@ public abstract class Risiko implements Serializable {
     public String getBezeichnung() {
         return bezeichnung;
     }
+    public void setBezeichnung(String bezeichnung) {
+        this.bezeichnung = bezeichnung;
+    }
     public LocalDate getErstelldatum() {
         return erstellungsdatum;
     }
-    public float getKostenImSchadensfall() {return kosten_im_schadensfall;}
+    public void setErstellungsdatum(LocalDate erstellungsdatum) {
+        this.erstellungsdatum = erstellungsdatum;
+    }
+    public float getKosten_im_schadensfall() {return kosten_im_schadensfall;}
+    public void setKosten_im_schadensfall(float kosten_im_schadensfall) {
+        this.kosten_im_schadensfall = kosten_im_schadensfall;
+    }
     public float getEintrittswahrscheinlichkeit() {return eintrittswahrscheinlichkeit;}
+    public void setEintrittswahrscheinlichkeit(float eintrittswahrscheinlichkeit) {
+        this.eintrittswahrscheinlichkeit = eintrittswahrscheinlichkeit;
+    }
     @Override
     public boolean equals(Object object) {
         if(this == object) {
@@ -62,7 +76,7 @@ public abstract class Risiko implements Serializable {
             return false;
         if(this.getEintrittswahrscheinlichkeit() != risiko.getEintrittswahrscheinlichkeit())
             return false;
-        if(this.getKostenImSchadensfall() != risiko.getKostenImSchadensfall())
+        if(this.getKosten_im_schadensfall() != risiko.getKosten_im_schadensfall())
             return false;
         if(!this.getErstelldatum().equals(risiko.getErstelldatum()))
             return false;
