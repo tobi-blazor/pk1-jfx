@@ -1,6 +1,8 @@
 package fb.fb4.pk1jfx;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 
 public class RisikoErfassungView extends Stage {
     Risikoverwaltung risikoverwaltung;
@@ -60,6 +63,12 @@ public class RisikoErfassungView extends Stage {
     private HBox createButtons() {
         Button weiterButton = new Button("Weiter");
         Button abbrechenButton = new Button("Abbrechen");
+        abbrechenButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("schließen owo");
+            }
+        });
 
         HBox buttons = new HBox(weiterButton, abbrechenButton);
         buttons.setAlignment(Pos.CENTER);
