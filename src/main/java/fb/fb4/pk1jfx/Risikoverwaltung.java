@@ -92,4 +92,8 @@ public class Risikoverwaltung {
         }
     }
 
+    public Iterator<Risiko> iterator() {
+        return risikoList.iterator();
+    }
+
 }
