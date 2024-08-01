@@ -17,18 +17,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Risikoverwaltung risikoverwaltung = new Risikoverwaltung();
-        AkzeptablesRisiko ar = new AkzeptablesRisiko();
-
         RisikoverwaltungView risikoverwaltungView = new RisikoverwaltungView(risikoverwaltung, stage);
         risikoverwaltungView.showView();
-        RisikoErfassungView risikoErfassungView = new RisikoErfassungView(ar, stage);
-        risikoErfassungView.showView();
 
 
-        RisikoExtremErfassungView risikoExtremErfassungView = new RisikoExtremErfassungView(new ExtremesRisiko(), stage );
-        risikoExtremErfassungView.showView();
-        RisikoInakzeptabelErfassungView risikoInakzeptabelErfassungView = new RisikoInakzeptabelErfassungView(new InakzeptablesRisiko(), stage);
-        risikoInakzeptabelErfassungView.showView();
 
     }
 

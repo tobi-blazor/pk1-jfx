@@ -23,8 +23,8 @@ public class RisikoExtremErfassungView extends Stage {
     SimpleStringProperty massnahmen, versicherungsbeitrag;
     Label errorMessage;
 
-    public RisikoExtremErfassungView(ExtremesRisiko risiko, Stage stage) {
-        this.risiko = risiko;
+    public RisikoExtremErfassungView(Risiko risiko, Stage stage) {
+        this.risiko = (ExtremesRisiko) risiko;
         this.initOwner(stage);
         this.initModality(Modality.WINDOW_MODAL);
     }

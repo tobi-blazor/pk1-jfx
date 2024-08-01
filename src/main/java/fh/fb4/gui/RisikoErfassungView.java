@@ -1,5 +1,7 @@
 package fh.fb4.gui;
 
+import fh.fb4.fachlogik.ExtremesRisiko;
+import fh.fb4.fachlogik.InakzeptablesRisiko;
 import fh.fb4.fachlogik.Risiko;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -24,9 +26,13 @@ public class RisikoErfassungView extends Stage {
     Risiko risiko;
     SimpleStringProperty bezeichnung, eintrittswahrscheinlichkeit, kostenImSchadensfall;
     Label errorMessage;
+    private final float LIMIT = 10000f;
+    private final float KOSTENLIMIT = 1000000f;
+    Stage stage;
 
     public RisikoErfassungView(Risiko risiko, Stage stage) {
         this.risiko = risiko;
+        this.stage = stage;
         this.initOwner(stage);
         this.initModality(Modality.WINDOW_MODAL);
     }
@@ -95,6 +101,14 @@ public class RisikoErfassungView extends Stage {
                 }
                 risiko.setBezeichnung(bezeichnung.get());
                 risiko.setErstellungsdatum(LocalDate.now());
+                if(isInakzeptablesRisiko()) {
+                    RisikoInakzeptabelErfassungView risikoInakzeptabelErfassungView = new RisikoInakzeptabelErfassungView(risiko, stage);
+                    risikoInakzeptabelErfassungView.showView();
+                    System.out.println(risiko.toString());
+                }else if (isExtremesRisiko()) {
+                    RisikoExtremErfassungView risikoExtremErfassungView = new RisikoExtremErfassungView(risiko, stage);
+                    risikoExtremErfassungView.showView();
+                }
             }
         });
 
@@ -102,6 +116,21 @@ public class RisikoErfassungView extends Stage {
         buttons.setAlignment(Pos.CENTER);
         return buttons;
     }
+    private boolean isAkzeptablesRisiko() {
+        float risikowert = risiko.getEintrittswahrscheinlichkeit() * risiko.getKosten_im_schadensfall();
+        return risikowert < LIMIT;
+    }
+
+    private boolean isInakzeptablesRisiko() {
+        float risikowert = risiko.getEintrittswahrscheinlichkeit() * risiko.getKosten_im_schadensfall();
+        return risikowert < KOSTENLIMIT && risikowert >= LIMIT;
+    }
+
+    private boolean isExtremesRisiko() {
+        float risikowert = risiko.getEintrittswahrscheinlichkeit() * risiko.getKosten_im_schadensfall();
+        return risikowert>= KOSTENLIMIT;
+    }
+
 
     private Scene createScene() {
         initProperties();

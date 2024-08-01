@@ -1,5 +1,6 @@
 package fh.fb4.gui;
 
+import fh.fb4.fachlogik.AkzeptablesRisiko;
 import fh.fb4.fachlogik.InakzeptablesRisiko;
 import fh.fb4.fachlogik.Risiko;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,11 +19,29 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 
+import java.io.IOException;
+import java.time.LocalDate;
+
 public class RisikoInakzeptabelErfassungView extends Stage {
     InakzeptablesRisiko risiko;
     SimpleStringProperty massnahmen;
-    public RisikoInakzeptabelErfassungView(InakzeptablesRisiko risiko, Stage stage) {
-        this.risiko = risiko;
+    public RisikoInakzeptabelErfassungView(Risiko risiko, Stage stage) {
+        if(risiko.getClass().equals(AkzeptablesRisiko.class)) {
+            String bezeichnung = risiko.getBezeichnung();
+            float eintrittswahrscheinlichkeit = risiko.getEintrittswahrscheinlichkeit();
+            float kostenimschadensfall = risiko.getKosten_im_schadensfall();
+            LocalDate erstelldatum = risiko.getErstelldatum();
+            risiko = new InakzeptablesRisiko();
+            this.risiko = (InakzeptablesRisiko) risiko;
+            this.risiko.setBezeichnung(bezeichnung);
+            this.risiko.setEintrittswahrscheinlichkeit(eintrittswahrscheinlichkeit);
+            this.risiko.setKosten_im_schadensfall(kostenimschadensfall);
+            this.risiko.setErstellungsdatum(erstelldatum);
+        }else if(risiko.getClass().equals(InakzeptablesRisiko.class)) {
+            this.risiko = (InakzeptablesRisiko)  risiko;
+        }else {
+            System.out.println("irgendwas ist kaputt");
+        }
         this.initOwner(stage);
         this.initModality(Modality.WINDOW_MODAL);
     }
@@ -62,6 +81,11 @@ public class RisikoInakzeptabelErfassungView extends Stage {
             @Override
             public void handle(ActionEvent e) {
                 risiko.setMassnahme(massnahmen.get());
+                try {
+                    risiko.druckeDaten(System.out);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
