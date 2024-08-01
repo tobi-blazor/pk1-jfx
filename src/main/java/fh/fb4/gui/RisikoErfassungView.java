@@ -23,6 +23,7 @@ import java.time.LocalDate;
 public class RisikoErfassungView extends Stage {
     Risiko risiko;
     SimpleStringProperty bezeichnung, eintrittswahrscheinlichkeit, kostenImSchadensfall;
+    Label errorMessage;
 
     public RisikoErfassungView(Risiko risiko, Stage stage) {
         this.risiko = risiko;
@@ -40,6 +41,7 @@ public class RisikoErfassungView extends Stage {
         bezeichnung = new SimpleStringProperty();
         eintrittswahrscheinlichkeit = new SimpleStringProperty();
         kostenImSchadensfall = new SimpleStringProperty();
+        errorMessage = new Label("");
     }
 
     private GridPane createGrid() {
@@ -63,6 +65,12 @@ public class RisikoErfassungView extends Stage {
 
         gridPane.add(new Label("Kosten im Schadensfall:"), 0, 2);
         gridPane.add(tf_KostenImSchadensfall, 1, 2);
+
+
+        gridPane.add(new Label("Fehler:"), 0, 3);
+        gridPane.add(errorMessage, 1, 3);
+
+
         return gridPane;
     }
 
@@ -79,9 +87,13 @@ public class RisikoErfassungView extends Stage {
         weiterButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                try {
+                    risiko.setEintrittswahrscheinlichkeit(Float.parseFloat(eintrittswahrscheinlichkeit.get()));
+                    risiko.setKosten_im_schadensfall(Float.parseFloat(kostenImSchadensfall.get()));
+                }catch (NumberFormatException numberFormatException) {
+                    errorMessage.textProperty().set(numberFormatException.toString());
+                }
                 risiko.setBezeichnung(bezeichnung.get());
-                risiko.setEintrittswahrscheinlichkeit(Float.parseFloat(eintrittswahrscheinlichkeit.get()));
-                risiko.setKosten_im_schadensfall(Float.parseFloat(kostenImSchadensfall.get()));
                 risiko.setErstellungsdatum(LocalDate.now());
             }
         });
