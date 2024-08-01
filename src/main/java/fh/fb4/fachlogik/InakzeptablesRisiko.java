@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 public class InakzeptablesRisiko extends Risiko {
     // rückstellung = risikowert
     private String massnahme;
-    InakzeptablesRisiko() {
+    public InakzeptablesRisiko() {
         super();
     }
     InakzeptablesRisiko(String bezeichnung, float eintrittswahrscheinlichkeit, float kosten_im_schadensfall, String massnahme) {

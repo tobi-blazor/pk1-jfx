@@ -8,7 +8,7 @@ public class ExtremesRisiko extends InakzeptablesRisiko {
     // rückstellung = versicherungsbeitrag
 
     private float versicherungsbeitrag;
-    ExtremesRisiko() {
+    public ExtremesRisiko() {
         super();
     }
     ExtremesRisiko(String bezeichnung, float eintrittswahrscheinlichkeit, float kosten_im_schadensfall, String massnahme, float versicherungsbeitrag) {

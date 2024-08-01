@@ -1,7 +1,10 @@
 package fh.fb4.gui;
 
+import fh.fb4.fachlogik.ExtremesRisiko;
 import fh.fb4.fachlogik.Risiko;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,13 +15,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class RisikoExtremErfassungView extends Stage {
-    Risiko risiko;
+    ExtremesRisiko risiko;
     SimpleStringProperty massnahmen, versicherungsbeitrag;
-    public RisikoExtremErfassungView(Risiko risiko, Stage stage) {
+    Label errorMessage;
+
+    public RisikoExtremErfassungView(ExtremesRisiko risiko, Stage stage) {
         this.risiko = risiko;
+        this.initOwner(stage);
+        this.initModality(Modality.WINDOW_MODAL);
     }
 
     public void showView() {
@@ -30,6 +38,7 @@ public class RisikoExtremErfassungView extends Stage {
     private void initProperties() {
         massnahmen = new SimpleStringProperty();
         versicherungsbeitrag = new SimpleStringProperty();
+        errorMessage = new Label("");
     }
 
     private GridPane createGrid() {
@@ -37,7 +46,9 @@ public class RisikoExtremErfassungView extends Stage {
         TextField tf_versicherungsbeitrag = new TextField();
 
         massnahmen.bind(tf_massnahmen.textProperty());
-        massnahmen.bind(tf_versicherungsbeitrag.textProperty());
+        tf_massnahmen.textProperty().set(risiko.getMassnahme());
+        versicherungsbeitrag.bind(tf_versicherungsbeitrag.textProperty());
+        tf_versicherungsbeitrag.textProperty().set(Float.toString(risiko.getVersicherungsbeitrag()));
 
 
         GridPane gridPane = new GridPane();
@@ -50,12 +61,27 @@ public class RisikoExtremErfassungView extends Stage {
         gridPane.add(new Label("Versicherungsbeitrag:"), 0, 2);
         gridPane.add(tf_versicherungsbeitrag, 1, 2);
 
+        gridPane.add(new Label("Fehler:"), 0, 3);
+        gridPane.add(errorMessage, 1, 3);
+
         return gridPane;
     }
 
     private HBox createButtons() {
         Button weiterButton = new Button("Weiter");
         Button abbrechenButton = new Button("Abbrechen");
+
+        weiterButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    risiko.setVersicherungsbeitrag(Float.parseFloat(versicherungsbeitrag.get()));
+                }catch (NumberFormatException numberFormatException) {
+                    errorMessage.textProperty().set(numberFormatException.toString());
+                }
+                risiko.setMassnahme(massnahmen.get());
+            }
+        });
 
         HBox buttons = new HBox(weiterButton, abbrechenButton);
         buttons.setAlignment(Pos.CENTER);

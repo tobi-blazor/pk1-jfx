@@ -1,6 +1,8 @@
 package fb.fb4.pk1jfx;
 
 import fh.fb4.fachlogik.AkzeptablesRisiko;
+import fh.fb4.fachlogik.ExtremesRisiko;
+import fh.fb4.fachlogik.InakzeptablesRisiko;
 import fh.fb4.fachlogik.Risikoverwaltung;
 import fh.fb4.gui.RisikoErfassungView;
 import fh.fb4.gui.RisikoExtremErfassungView;
@@ -23,9 +25,9 @@ public class Main extends Application {
         risikoErfassungView.showView();
 
 
-        RisikoExtremErfassungView risikoExtremErfassungView = new RisikoExtremErfassungView(ar, stage );
+        RisikoExtremErfassungView risikoExtremErfassungView = new RisikoExtremErfassungView(new ExtremesRisiko(), stage );
         risikoExtremErfassungView.showView();
-        RisikoInakzeptabelErfassungView risikoInakzeptabelErfassungView = new RisikoInakzeptabelErfassungView(ar, stage);
+        RisikoInakzeptabelErfassungView risikoInakzeptabelErfassungView = new RisikoInakzeptabelErfassungView(new InakzeptablesRisiko(), stage);
         risikoInakzeptabelErfassungView.showView();
 
     }

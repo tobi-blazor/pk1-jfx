@@ -1,7 +1,10 @@
 package fh.fb4.gui;
 
+import fh.fb4.fachlogik.InakzeptablesRisiko;
 import fh.fb4.fachlogik.Risiko;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,12 +16,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 
 public class RisikoInakzeptabelErfassungView extends Stage {
-    Risiko risiko;
+    InakzeptablesRisiko risiko;
     SimpleStringProperty massnahmen;
-    public RisikoInakzeptabelErfassungView(Risiko risiko, Stage stage) {
+    public RisikoInakzeptabelErfassungView(InakzeptablesRisiko risiko, Stage stage) {
         this.risiko = risiko;
+        this.initOwner(stage);
+        this.initModality(Modality.WINDOW_MODAL);
     }
 
     public void showView() {
@@ -35,6 +41,7 @@ public class RisikoInakzeptabelErfassungView extends Stage {
         TextField tf_massnahmen = new TextField();
 
         massnahmen.bind(tf_massnahmen.textProperty());
+        tf_massnahmen.textProperty().set(risiko.getMassnahme());
 
 
         GridPane gridPane = new GridPane();
@@ -50,6 +57,13 @@ public class RisikoInakzeptabelErfassungView extends Stage {
     private HBox createButtons() {
         Button weiterButton = new Button("Weiter");
         Button abbrechenButton = new Button("Abbrechen");
+
+        weiterButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                risiko.setMassnahme(massnahmen.get());
+            }
+        });
 
         HBox buttons = new HBox(weiterButton, abbrechenButton);
         buttons.setAlignment(Pos.CENTER);
